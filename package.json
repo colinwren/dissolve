@@ -14,15 +14,13 @@
     "grunt-contrib-uglify": "~0.1.1",
     "grunt-contrib-watch": "~0.2.0",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt": "~0.4.1",
-    "mocha": "*"
+    "grunt": "~0.4.1"
   },
   "testling": {
     "browsers": [
         "ie6", "ie7", "ie8", "ie9",
         "firefox/15", "chrome/22", "opera/12", "safari/5.1"
     ],
-    "harness" : "mocha-qunit",
-    "files": "test/*.js"
+    "html" : "test/dissolve.html"
   }
 }
