@@ -1,6 +1,7 @@
 # Dissolve
 
 Text fading transition
+
 [![browser support](https://ci.testling.com/colinwren/dissolve.png)](https://ci.testling.com/colinwren/dissolve)
 ## Getting Started
 Download the [production version][min] or the [development version][max].
