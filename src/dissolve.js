@@ -13,12 +13,15 @@
   }
 
   // Wrap each letter in a span with a random numbered dissolve class
-  function prepare (element, options) {
+  $.fn.prepareText = function (options) {
+
+    // Override default options with passed-in options.
+    options = $.extend({}, $.fn.dissolve.options, options);
 
     // Final element contents
     var buffer = '';
 
-    var characters = element.html().split('');
+    var characters = this.html().split('');
     for (var i = 0; i < characters.length; i++) {
       var character = characters[i];
 
@@ -35,15 +38,15 @@
     }
 
     // Replace old contents prepared for fade
-    $(element)
-      .html(buffer)
-      .addClass('dissolve-ready');
-  }
+    this.html(buffer);
 
-  function fade (element, options, callback) {
+    return this;
+  };
+
+  function fadeChar (element, options, callback) {
     options.count--;
     var done = options.count < 1;
-    var toFade = $('.dissolve' + options.count);
+    var toFade = element.find('.dissolve' + options.count);
     var fadeCounter = toFade.length;
 
     toFade.fadeTo(options.fadeTime, options.opacity, function() {
@@ -55,25 +58,27 @@
 
     if (!done) {
       window.setTimeout(function(){
-        fade(element, options, callback);
+        element.fadeCharacters(options, callback);
       }, options.fadeOffset);
     }
   }
 
-  $.fn.dissolve = function(options, callback) {
+  $.fn.fadeCharacters = function (options, callback) {
 
     // Override default options with passed-in options.
     options = $.extend({}, $.fn.dissolve.options, options);
 
-    this.each(function() {
-      // Prepare the element for fading if it isn't already
-      if ( !$(this).hasClass('dissolve-ready')) {
-        prepare($(this), options);
-      }
+    fadeChar(this, options, callback);
+  };
 
-      // Begin fading
-      fade($(this), options, callback);
-    });
+  $.fn.dissolve = function(options, callback) {
+
+    this
+      .each(function() {
+        // Prepare the element for fading
+        $(this).prepareText(options);
+      })
+      .fadeCharacters(options, callback); // Begin fading
 
     return this;
   };

@@ -11,13 +11,12 @@
     strictEqual(this.elems.dissolve(), this.elems, 'should be chainable');
   });
 
-  asyncTest('prepares target element correctly', 2, function() {
+  asyncTest('prepares target element correctly', 1, function() {
     var text = this.elems.filter('#text');
     var charLength = text.html().length;
     text.dissolve({fadeTime: 1, fadeOffset: 1}, function() {
       var spanCount = text.find('span').length;
       equal(spanCount, charLength);
-      ok(text.hasClass('dissolve-ready'));
       start();
     });
   });
