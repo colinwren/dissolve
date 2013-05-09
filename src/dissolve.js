@@ -8,15 +8,16 @@
 
 (function($) {
 
-  function random (max) {
-    return Math.floor(Math.random() * max);
-  }
-
   // Wrap each letter in a span with a random numbered dissolve class
   $.fn.prepareText = function (options) {
 
-    // Override default options with passed-in options.
-    options = $.extend({}, $.fn.dissolve.options, options);
+    if (typeof options === 'function') {
+      callback = options;
+      options = $.fn.dissolve.options;
+    } else {
+      // Override default options with passed-in options.
+      options = $.extend({}, $.fn.dissolve.options, options);
+    }
 
     // Final element contents
     var buffer = '';
@@ -31,9 +32,10 @@
         buffer += characters.slice(i, tagEnd + 1).join('');
         i = tagEnd;
 
-      // Wrap letter in dissolve class
       } else {
-        buffer += '<span class="dissolve' + random(options.count) + '">' + character + '</span>';
+        // Wrap letter in dissolve class
+        var classNum = Math.floor(Math.random() * options.count);
+        buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
       }
     }
 
@@ -65,20 +67,28 @@
 
   $.fn.fadeCharacters = function (options, callback) {
 
-    // Override default options with passed-in options.
-    options = $.extend({}, $.fn.dissolve.options, options);
+    if (typeof options === 'function') {
+      callback = options;
+      options = $.fn.dissolve.options;
+    } else {
+      // Override default options with passed-in options.
+      options = $.extend({}, $.fn.dissolve.options, options);
+    }
 
     fadeChar(this, options, callback);
+
+    return this;
   };
 
   $.fn.dissolve = function(options, callback) {
 
     this
+      // Prepare the elements for fading
       .each(function() {
-        // Prepare the element for fading
         $(this).prepareText(options);
       })
-      .fadeCharacters(options, callback); // Begin fading
+      // Begin fading
+      .fadeCharacters(options, callback);
 
     return this;
   };
