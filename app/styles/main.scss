@@ -1,0 +1,69 @@
+//// Mixins and variables
+@import "compass/css3/images";
+@import "compass/css3/border-radius";
+@import "compass/css3/text-shadow";
+@import "compass/css3/box-shadow";
+@import "compass/css3/transition";
+@import 'http://fonts.googleapis.com/css?family=Roboto+Slab';
+body {
+  background: hsl(0, 0%, 89%);
+  font-family: 'Roboto Slab', serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+.content {
+  margin: 0 auto;
+  width: 1000px;
+}
+h1 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 110px;
+  /*color: #ff5b54;*/
+  color: #3cc5e6;
+  margin: 0;
+  padding: 10px 0;
+  -webkit-animation-name: fadeInDown;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  -webkit-animation-delay: .5s;
+  text-shadow: 1px 1px darken(#3cc5e6, 20);
+}
+
+p {
+  padding: 15px 0;
+  font-size: 30px;
+}
+
+code {
+  font-family: Monaco, Consolas, "Lucida Console", monospace;
+}
+
+button {
+  box-shadow: inset 0 1px 0 hsla(0, 100%, 100%, 0.27);
+  background: hsl(2, 100%, 65%);
+  border: 1px solid darken(#ff5b54, 10);
+  border-radius: 4px;
+  color: white;
+  padding: 15px;
+  font-size: 30px;
+  text-shadow: 0 -1px 0px hsla(0, 0%, 0%, 0.25);
+  margin: 30px auto;
+  display: block;
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+  &:hover {
+    background: hsl(2, 95%, 60%);
+  }
+}
+
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
