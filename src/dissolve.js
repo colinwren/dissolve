@@ -86,7 +86,15 @@
       if (matchedElements.length) toFade.push(matchedElements);
     }
 
-    if (toFade.length) fadeChar(toFade, options, callback);
+
+    // If callback is provided call it with the correct context
+    var that = this;
+
+    // Third argument will be false or function that calls callback with
+    // correct context
+    if (toFade.length) fadeChar(toFade, options, typeof callback === 'function' && function() {
+      if (typeof callback === 'function') callback.call(that);
+    });
 
     return this;
   };

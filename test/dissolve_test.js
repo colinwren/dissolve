@@ -57,6 +57,15 @@
     strictEqual(this.elems.fadeCharacters(), this.elems, 'should be chainable');
   });
 
+  asyncTest('calls callback with correct context', 1, function() {
+    var text = this.elems.filter('#text');
+    text.prepareText();
+    text.fadeCharacters({opacity: 0.2, fadeTime: 1, fadeOffset: 1}, function() {
+      equal(this.attr('id'), text.attr('id'));
+      start();
+    });
+  });
+
   asyncTest('fades elements to specified opacity', 1, function() {
     var text = this.elems.filter('#text');
     text.prepareText();
@@ -84,6 +93,14 @@
 
   test('is chainable', 1, function() {
     strictEqual(this.elems.dissolve(), this.elems, 'should be chainable');
+  });
+
+  asyncTest('calls callback with correct context', 1, function() {
+    var text = this.elems.filter('#text');
+    text.dissolve({opacity: 0.2, fadeTime: 1, fadeOffset: 1}, function() {
+      equal(this.attr('id'), text.attr('id'));
+      start();
+    });
   });
 
   asyncTest('prepares target element correctly', 1, function() {
