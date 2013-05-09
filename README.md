@@ -1,4 +1,4 @@
-# Dissolve
+# Dissolve [![Build Status](https://travis-ci.org/colinwren/dissolve.png?branch=master)](https://travis-ci.org/colinwren/dissolve)
 
 Text fading transition
 
