@@ -2,7 +2,6 @@
 
 Text fading transition
 
-[![browser support](https://ci.testling.com/colinwren/dissolve.png)](https://ci.testling.com/colinwren/dissolve)
 ## Getting Started
 Download the [production version][min] or the [development version][max].
 
@@ -26,6 +25,11 @@ _(Coming soon)_
 
 ## Examples
 _(Coming soon)_
+
+## Todo
+- Submit to uheap
+- Add to bower
+- Add to jquery plugin registry
 
 ## Release History
 _(Nothing yet)_
