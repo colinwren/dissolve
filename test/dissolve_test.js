@@ -1,9 +1,84 @@
 (function($) {
 
+  module('jQuery.prepareText', {
+    // This will run before each test in this module.
+    setup: function() {
+      this.elems = $('#qunit-fixture').children();
+      $('#text, #text-with-tags')
+        .clone()
+        .appendTo('#temp');
+      this.elems = $('#temp').children();
+    },
+
+    teardown: function() {
+     $('#temp').empty();
+    }
+  });
+
+  test('is chainable', 1, function() {
+    strictEqual(this.elems.prepareText(), this.elems, 'should be chainable');
+  });
+
+  test('prepares target element correctly', 1, function() {
+    var text = this.elems.filter('#text');
+    var charLength = text.html().length;
+    text.prepareText();
+    var spanCount = text.find('span').length;
+    equal(spanCount, charLength);
+  });
+
+  test('prepares target element that contains tags correctly', 1, function() {
+    var textTag = this.elems.filter('#text-with-tags');
+    var charLength = textTag.html().length;
+    // Subtract length of span tags
+    charLength = charLength - 13;
+    var startSpanCount = textTag.find('span').length;
+    textTag.prepareText();
+    var spanCount = textTag.find('span').length;
+    equal(spanCount, charLength + startSpanCount );
+  });
+
+  module('jQuery.fadeCharacters', {
+    // This will run before each test in this module.
+    setup: function() {
+      this.elems = $('#qunit-fixture').children();
+      $('#text, #text-with-tags')
+        .clone()
+        .appendTo('#temp');
+      this.elems = $('#temp').children();
+    },
+
+    teardown: function() {
+     $('#temp').empty();
+    }
+  });
+
+  test('is chainable', 1, function() {
+    strictEqual(this.elems.fadeCharacters(), this.elems, 'should be chainable');
+  });
+
+  asyncTest('fades elements to specified opacity', 1, function() {
+    var text = this.elems.filter('#text');
+    text.prepareText();
+    text.fadeCharacters({opacity: 0.2, fadeTime: 1, fadeOffset: 1}, function() {
+      var elementOpacity = text.children().first().css('opacity') * 10;
+      equal(Math.round(elementOpacity), 2);
+      start();
+    });
+  });
+
   module('jQuery.dissolve', {
     // This will run before each test in this module.
     setup: function() {
       this.elems = $('#qunit-fixture').children();
+      $('#text, #text-with-tags')
+        .clone()
+        .appendTo('#temp');
+      this.elems = $('#temp').children();
+    },
+
+    teardown: function() {
+     $('#temp').empty();
     }
   });
 
@@ -14,7 +89,7 @@
   asyncTest('prepares target element correctly', 1, function() {
     var text = this.elems.filter('#text');
     var charLength = text.html().length;
-    text.dissolve({fadeTime: 1, fadeOffset: 1}, function() {
+    text.dissolve({opacity: 0.2, fadeTime: 1, fadeOffset: 1},function() {
       var spanCount = text.find('span').length;
       equal(spanCount, charLength);
       start();
@@ -27,7 +102,7 @@
     // Subtract length of span tags
     charLength = charLength - 13;
     var startSpanCount = textTag.find('span').length;
-    textTag.dissolve({fadeTime: 1, fadeOffset: 1}, function() {
+    textTag.dissolve({opacity: 0.2, fadeTime: 1, fadeOffset: 1},function() {
       var spanCount = textTag.find('span').length;
       equal(spanCount, charLength + startSpanCount );
       start();
