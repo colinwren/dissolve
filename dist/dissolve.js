@@ -1,4 +1,4 @@
-/*! Dissolve - v0.0.0 - 2013-05-08
+/*! Dissolve - v0.0.0 - 2013-05-09
 * https://github.com/colinwren/dissolve
 * Copyright (c) 2013 Colin Wren; Licensed MIT */
 (function($) {
@@ -8,7 +8,7 @@
 
     if (typeof options === 'function') {
       callback = options;
-      options = {};
+      options = $.fn.dissolve.options;
     } else {
       // Override default options with passed-in options.
       options = $.extend({}, $.fn.dissolve.options, options);
@@ -40,22 +40,25 @@
     return this;
   };
 
-  function fadeChar (element, options, callback) {
-    options.count--;
-    var done = options.count < 1;
-    var toFade = element.find('.dissolve' + options.count);
-    var fadeCounter = toFade.length;
+  function fadeChar (toFade, options, callback) {
+    var currentSet = toFade.pop();
+    var done = toFade.length === 0;
 
-    toFade.fadeTo(options.fadeTime, options.opacity, function() {
+    // Only call callback when the last elements animation finishes
+    var elementsLeft = currentSet.length;
+
+    currentSet.fadeTo(options.fadeTime, options.opacity, function() {
       if (done && typeof callback === 'function') {
-        fadeCounter--;
-        if (fadeCounter === 1) callback();
+        elementsLeft--;
+        if (elementsLeft === 0) {
+          callback();
+        }
       }
     });
 
     if (!done) {
       window.setTimeout(function(){
-        element.fadeCharacters(options, callback);
+        fadeChar(toFade, options, callback);
       }, options.fadeOffset);
     }
   }
@@ -64,13 +67,21 @@
 
     if (typeof options === 'function') {
       callback = options;
-      options = {};
+      options = $.fn.dissolve.options;
     } else {
       // Override default options with passed-in options.
       options = $.extend({}, $.fn.dissolve.options, options);
     }
 
-    fadeChar(this, options, callback);
+    // Make array of sets to fade
+    var toFade = [];
+    for (var i = 0; i < options.count; i++) {
+      // Only push set if it contains elements
+      var matchedElements = this.find('.dissolve' + i);
+      if (matchedElements.length) toFade.push(matchedElements);
+    }
+
+    if (toFade.length) fadeChar(toFade, options, callback);
 
     return this;
   };

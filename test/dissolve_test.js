@@ -102,7 +102,7 @@
     // Subtract length of span tags
     charLength = charLength - 13;
     var startSpanCount = textTag.find('span').length;
-    textTag.dissolve({opacity: 0.2, fadeTime: 1, fadeOffset: 1},function() {
+    textTag.dissolve({opacity: 0.2, fadeTime: 1, fadeOffset: 1}, function() {
       var spanCount = textTag.find('span').length;
       equal(spanCount, charLength + startSpanCount );
       start();
