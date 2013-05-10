@@ -18,28 +18,32 @@
       options = $.extend({}, $.fn.dissolve.options, options);
     }
 
-    // Final element contents
-    var buffer = '';
+    this.each(function() {
 
-    var characters = this.html().split('');
-    for (var i = 0; i < characters.length; i++) {
-      var character = characters[i];
+      // Final element contents
+      var buffer = '';
 
-      // Skip over tags
-      if (character === '<') {
-        var tagEnd = $.inArray('>', characters, i);
-        buffer += characters.slice(i, tagEnd + 1).join('');
-        i = tagEnd;
+      var characters = $(this).html().split('');
+      for (var i = 0; i < characters.length; i++) {
+        var character = characters[i];
 
-      } else {
-        // Wrap letter in dissolve class
-        var classNum = Math.floor(Math.random() * options.count);
-        buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
+        // Skip over tags
+        if (character === '<') {
+          var tagEnd = $.inArray('>', characters, i);
+          buffer += characters.slice(i, tagEnd + 1).join('');
+          i = tagEnd;
+
+        } else {
+          // Wrap letter in dissolve class
+          var classNum = Math.floor(Math.random() * options.count);
+          buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
+        }
       }
-    }
 
-    // Replace old contents prepared for fade
-    this.html(buffer);
+      // Replace old contents prepared for fade
+      $(this).html(buffer);
+
+    });
 
     return this;
   };
@@ -89,7 +93,7 @@
     // If callback is provided call it with the correct context
     var that = this;
 
-    // Third argument will be false or function that calls callback with
+    // Third argument will be false or a function that calls callback with the
     // correct context
     if (toFade.length) fadeChar(toFade, options, typeof callback === 'function' && function() {
       if (typeof callback === 'function') callback.call(that);
@@ -102,9 +106,7 @@
 
     this
       // Prepare the elements for fading
-      .each(function() {
-        $(this).prepareText(options);
-      })
+      .prepareText(options)
       // Begin fading
       .fadeCharacters(options, callback);
 

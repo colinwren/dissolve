@@ -1,4 +1,4 @@
-/*! Dissolve - v0.0.0 - 2013-05-09
+/*! Dissolve - v0.0.0 - 2013-05-10
 * https://github.com/colinwren/dissolve
 * Copyright (c) 2013 Colin Wren; Licensed MIT */
 (function($) {
@@ -7,35 +7,38 @@
   $.fn.prepareText = function (options) {
 
     if (typeof options === 'function') {
-      callback = options;
       options = $.fn.dissolve.options;
     } else {
       // Override default options with passed-in options.
       options = $.extend({}, $.fn.dissolve.options, options);
     }
 
-    // Final element contents
-    var buffer = '';
+    this.each(function() {
 
-    var characters = this.html().split('');
-    for (var i = 0; i < characters.length; i++) {
-      var character = characters[i];
+      // Final element contents
+      var buffer = '';
 
-      // Skip over tags
-      if (character === '<') {
-        var tagEnd = $.inArray('>', characters, i);
-        buffer += characters.slice(i, tagEnd + 1).join('');
-        i = tagEnd;
+      var characters = $(this).html().split('');
+      for (var i = 0; i < characters.length; i++) {
+        var character = characters[i];
 
-      } else {
-        // Wrap letter in dissolve class
-        var classNum = Math.floor(Math.random() * options.count);
-        buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
+        // Skip over tags
+        if (character === '<') {
+          var tagEnd = $.inArray('>', characters, i);
+          buffer += characters.slice(i, tagEnd + 1).join('');
+          i = tagEnd;
+
+        } else {
+          // Wrap letter in dissolve class
+          var classNum = Math.floor(Math.random() * options.count);
+          buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
+        }
       }
-    }
 
-    // Replace old contents prepared for fade
-    this.html(buffer);
+      // Replace old contents prepared for fade
+      $(this).html(buffer);
+
+    });
 
     return this;
   };
@@ -50,14 +53,14 @@
     currentSet.fadeTo(options.fadeTime, options.opacity, function() {
       if (done && typeof callback === 'function') {
         elementsLeft--;
-        if (elementsLeft === 0) {
+        if (!elementsLeft) {
           callback();
         }
       }
     });
 
     if (!done) {
-      window.setTimeout(function(){
+      window.setTimeout(function() {
         fadeChar(toFade, options, callback);
       }, options.fadeOffset);
     }
@@ -81,7 +84,15 @@
       if (matchedElements.length) toFade.push(matchedElements);
     }
 
-    if (toFade.length) fadeChar(toFade, options, callback);
+
+    // If callback is provided call it with the correct context
+    var that = this;
+
+    // Third argument will be false or a function that calls callback with the
+    // correct context
+    if (toFade.length) fadeChar(toFade, options, typeof callback === 'function' && function() {
+      if (typeof callback === 'function') callback.call(that);
+    });
 
     return this;
   };
@@ -90,21 +101,19 @@
 
     this
       // Prepare the elements for fading
-      .each(function() {
-        $(this).prepareText(options);
-      })
+      .prepareText(options)
       // Begin fading
       .fadeCharacters(options, callback);
 
     return this;
   };
 
-  // Static method default options.
+  // Default options.
   $.fn.dissolve.options = {
     count: 8,        // Number of fade classes
     opacity: 0,      // Opacity to fade to
-    fadeTime: 3000,  // Length of time it takes to fade to opacity
-    fadeOffset: 1000 // Time between the different classes begin to fade
+    fadeTime: 2000,  // Length of time it takes to fade to opacity
+    fadeOffset: 300 // Time between the different classes begin to fade
   };
 
 }(jQuery));
