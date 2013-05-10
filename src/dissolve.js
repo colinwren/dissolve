@@ -12,7 +12,6 @@
   $.fn.prepareText = function (options) {
 
     if (typeof options === 'function') {
-      callback = options;
       options = $.fn.dissolve.options;
     } else {
       // Override default options with passed-in options.
@@ -55,14 +54,14 @@
     currentSet.fadeTo(options.fadeTime, options.opacity, function() {
       if (done && typeof callback === 'function') {
         elementsLeft--;
-        if (elementsLeft === 0) {
+        if (!elementsLeft) {
           callback();
         }
       }
     });
 
     if (!done) {
-      window.setTimeout(function(){
+      window.setTimeout(function() {
         fadeChar(toFade, options, callback);
       }, options.fadeOffset);
     }
@@ -112,12 +111,12 @@
     return this;
   };
 
-  // Static method default options.
+  // Default options.
   $.fn.dissolve.options = {
     count: 8,        // Number of fade classes
     opacity: 0,      // Opacity to fade to
-    fadeTime: 3000,  // Length of time it takes to fade to opacity
-    fadeOffset: 1000 // Time between the different classes begin to fade
+    fadeTime: 2000,  // Length of time it takes to fade to opacity
+    fadeOffset: 300 // Time between the different classes begin to fade
   };
 
 }(jQuery));
