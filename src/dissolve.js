@@ -96,7 +96,7 @@
     // Third argument will be false or a function that calls callback with the
     // correct context
     if (toFade.length) fadeChar(toFade, options, typeof callback === 'function' && function() {
-      if (typeof callback === 'function') callback.call(that);
+      callback.call(that);
     });
 
     return this;
