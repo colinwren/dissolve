@@ -1,0 +1,10 @@
+{
+  "name": "dissolve",
+  "version": "0.0.0",
+  "main": "dist/dissolve.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}
