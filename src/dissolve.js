@@ -7,9 +7,33 @@
  */
 
 (function($) {
+  $.prepareText = function(text, options) {
+    options = options || $.fn.dissolve.options;
+
+    var buffer = '';
+
+    var characters = text.split('');
+    for (var i = 0; i < characters.length; i++) {
+      var character = characters[i];
+
+      // Skip over tags
+      if (character === '<') {
+        var tagEnd = $.inArray('>', characters, i);
+        buffer += characters.slice(i, tagEnd + 1).join('');
+        i = tagEnd;
+
+      } else {
+        // Wrap letter in dissolve class
+        var classNum = Math.floor(Math.random() * options.count);
+        buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
+      }
+    }
+
+    return buffer;
+  };
 
   // Wrap each letter in a span with a random numbered dissolve class
-  $.fn.prepareText = function (options) {
+  $.fn.prepareElement = function (options) {
 
     if (typeof options === 'function') {
       options = $.fn.dissolve.options;
@@ -20,29 +44,9 @@
 
     this.each(function() {
 
-      // Final element contents
-      var buffer = '';
-
-      var characters = $(this).html().split('');
-      for (var i = 0; i < characters.length; i++) {
-        var character = characters[i];
-
-        // Skip over tags
-        if (character === '<') {
-          var tagEnd = $.inArray('>', characters, i);
-          buffer += characters.slice(i, tagEnd + 1).join('');
-          i = tagEnd;
-
-        } else {
-          // Wrap letter in dissolve class
-          var classNum = Math.floor(Math.random() * options.count);
-          buffer += '<span class="dissolve' + classNum + '">' + character + '</span>';
-        }
-      }
-
-      // Replace old contents prepared for fade
-      $(this).html(buffer);
-
+      // Prepare contents for fading
+      var preparedContent = $.prepareText($(this).html(), options);
+      $(this).html(preparedContent);
     });
 
     return this;
@@ -106,7 +110,7 @@
 
     this
       // Prepare the elements for fading
-      .prepareText(options)
+      .prepareElement(options)
       // Begin fading
       .fadeCharacters(options, callback);
 
