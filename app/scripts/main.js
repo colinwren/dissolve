@@ -10,9 +10,10 @@
     });
 
     $('#intro-text').dissolve(function() {
-      this.addClass('opaque');
-      this.html('You can also fade text in!<br /><br /> Take a gander at the <a class="documentation" href="https://github.com/colinwren/dissolve">documentation</a> for all of the options');
-      this.dissolve({opacity: 1});
+      this
+        .addClass('opaque')
+        .html($.prepareText('You can also fade text in!<br /><br /> Take a gander at the <a class="documentation" href="https://github.com/colinwren/dissolve">documentation</a> for all of the options'))
+        .fadeCharacters({opacity: 1});
     });
   });
 }());
