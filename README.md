@@ -79,8 +79,6 @@ In this case, `#sample` should have this CSS so that the contents start out opaq
 
 ## Todo
 - Submit to uheap
-- Add to bower
-- Add to jquery plugin registry
 
 ## Release History
-_(Nothing yet)_
+0.0.2 Initial release
