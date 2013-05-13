@@ -4,6 +4,7 @@
   "description": "Text fading transition",
   "version": "0.0.0",
   "homepage": "https://github.com/colinwren/dissolve",
+  "demo": "http://colinwren.github.io/dissolve/",
   "author": {
     "name": "Colin Wren",
     "email": "colinwrenca@gmail.com",
@@ -21,7 +22,7 @@
     }
   ],
   "dependencies": {
-    "jquery": "1.9.1"
+    "jquery": ">=1.9.1"
   },
-  "keywords": []
+  "keywords": ["fading", "animation"]
 }
