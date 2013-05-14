@@ -72,8 +72,11 @@ $('#sample')
 ```
 In this case, `#sample` should have this CSS so that the contents start out opaque:
 ```CSS
-#sample span{
+#sample span {
   opacity: 0;
+  // For ie compatability
+  filter: alpha(Opacity=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=00)";
 }
 ```
 
